@@ -15,6 +15,7 @@ export type Database = {
           completed_at: string | null
           id: number
           percentage: number
+          photo_url: string | null
           player_name: string
           score: number
           total_questions: number
@@ -25,6 +26,7 @@ export type Database = {
           completed_at?: string | null
           id?: number
           percentage: number
+          photo_url?: string | null
           player_name: string
           score: number
           total_questions: number
@@ -35,6 +37,7 @@ export type Database = {
           completed_at?: string | null
           id?: number
           percentage?: number
+          photo_url?: string | null
           player_name?: string
           score?: number
           total_questions?: number

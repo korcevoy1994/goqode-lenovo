@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Trophy, Medal, Award, RefreshCw } from 'lucide-react';
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { ArrowLeft, Trophy, Medal, Award, RefreshCw, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -54,6 +55,27 @@ const Results = () => {
 
   useEffect(() => {
     fetchResults();
+
+    // Настройка real-time обновлений
+    const channel = supabase
+      .channel('quiz-results-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'quiz_results'
+        },
+        (payload) => {
+          console.log('Real-time обновление:', payload);
+          fetchResults(); // Перезагружаем данные при любых изменениях
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const getRankIcon = (index: number) => {
@@ -77,39 +99,6 @@ const Results = () => {
     return "bg-red-500";
   };
 
-  const clearResults = async () => {
-    console.log('Очищаем все результаты...');
-    try {
-      const { error } = await supabase
-        .from('quiz_results')
-        .delete()
-        .neq('id', 0); // Удаляем все записи
-
-      if (error) {
-        console.error('Ошибка при очистке результатов:', error);
-        toast({
-          title: "Ошибка",
-          description: `Не удалось очистить результаты: ${error.message}`,
-          variant: "destructive"
-        });
-      } else {
-        console.log('Результаты успешно очищены');
-        setResults([]);
-        toast({
-          title: "Результаты очищены",
-          description: "Все результаты викторины удалены",
-        });
-      }
-    } catch (err) {
-      console.error('Неожиданная ошибка при очистке:', err);
-      toast({
-        title: "Ошибка",
-        description: "Произошла неожиданная ошибка при очистке результатов",
-        variant: "destructive"
-      });
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 p-4">
       <div className="max-w-4xl mx-auto">
@@ -123,27 +112,15 @@ const Results = () => {
             Вернуться к игре
           </Button>
           
-          <div className="flex gap-2">
-            <Button 
-              onClick={fetchResults}
-              variant="outline"
-              size="sm"
-              disabled={loading}
-            >
-              <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-              Обновить
-            </Button>
-            
-            {results.length > 0 && (
-              <Button 
-                onClick={clearResults}
-                variant="destructive"
-                size="sm"
-              >
-                Очистить результаты
-              </Button>
-            )}
-          </div>
+          <Button 
+            onClick={fetchResults}
+            variant="outline"
+            size="sm"
+            disabled={loading}
+          >
+            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+            Обновить
+          </Button>
         </div>
 
         <Card className="shadow-2xl">
@@ -193,13 +170,29 @@ const Results = () => {
                         {getRankIcon(index)}
                       </div>
                       
-                      <div>
-                        <h3 className="font-semibold text-lg text-gray-800">
-                          {result.player_name}
-                        </h3>
-                        <p className="text-sm text-gray-500">
-                          {result.completed_at ? new Date(result.completed_at).toLocaleString('ru-RU') : 'Время неизвестно'}
-                        </p>
+                      <div className="flex items-center space-x-3">
+                        <Avatar className="h-12 w-12">
+                          {result.photo_url ? (
+                            <AvatarImage 
+                              src={result.photo_url} 
+                              alt={result.player_name}
+                              className="object-cover"
+                            />
+                          ) : (
+                            <AvatarFallback>
+                              <User className="h-6 w-6 text-gray-400" />
+                            </AvatarFallback>
+                          )}
+                        </Avatar>
+                        
+                        <div>
+                          <h3 className="font-semibold text-lg text-gray-800">
+                            {result.player_name}
+                          </h3>
+                          <p className="text-sm text-gray-500">
+                            {result.completed_at ? new Date(result.completed_at).toLocaleString('ru-RU') : 'Время неизвестно'}
+                          </p>
+                        </div>
                       </div>
                     </div>
 

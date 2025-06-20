@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from 'react-router-dom';
-import { Play, Trophy, Users } from 'lucide-react';
+import { Play, Trophy } from 'lucide-react';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const Index = () => {
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-4 py-12">
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
+        <div className="grid md:grid-cols-2 gap-8">
           {/* Game Card */}
           <Card className="shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2">
             <CardHeader className="bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-t-lg">
@@ -104,40 +104,6 @@ const Index = () => {
             </CardContent>
           </Card>
         </div>
-
-        {/* About Section */}
-        <Card className="shadow-xl">
-          <CardHeader className="bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-t-lg">
-            <CardTitle className="text-2xl font-bold text-center">
-              О викторине
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-8">
-            <div className="grid md:grid-cols-3 gap-8 text-center">
-              <div>
-                <div className="text-4xl mb-4">🎯</div>
-                <h3 className="text-xl font-semibold mb-2">Интерактивность</h3>
-                <p className="text-gray-600">
-                  Удобный интерфейс с мгновенной обратной связью на каждый ответ
-                </p>
-              </div>
-              <div>
-                <div className="text-4xl mb-4">📚</div>
-                <h3 className="text-xl font-semibold mb-2">Обучение</h3>
-                <p className="text-gray-600">
-                  Узнайте больше о компании Lenovo и её инновационных решениях
-                </p>
-              </div>
-              <div>
-                <div className="text-4xl mb-4">🏆</div>
-                <h3 className="text-xl font-semibold mb-2">Соревнование</h3>
-                <p className="text-gray-600">
-                  Сравните свои результаты с другими участниками викторины
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
 
       {/* Footer */}

@@ -7,16 +7,10 @@ import { ArrowLeft, Trophy, Medal, Award, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import type { Tables } from "@/integrations/supabase/types";
 
-interface QuizResult {
-  id?: number;
-  player_name: string;
-  score: number;
-  total_questions: number;
-  percentage: number;
-  completed_at: string;
-  answers: boolean[];
-}
+// Используем тип из Supabase для результатов
+type QuizResult = Tables<'quiz_results'>;
 
 const Results = () => {
   const [results, setResults] = useState<QuizResult[]>([]);
@@ -187,7 +181,7 @@ const Results = () => {
               <div className="space-y-4">
                 {results.map((result, index) => (
                   <div
-                    key={result.id || index}
+                    key={result.id}
                     className={`flex items-center justify-between p-4 rounded-lg border-2 transition-all duration-200 ${
                       index < 3 
                         ? 'bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200 shadow-md' 
@@ -204,7 +198,7 @@ const Results = () => {
                           {result.player_name}
                         </h3>
                         <p className="text-sm text-gray-500">
-                          {new Date(result.completed_at).toLocaleString('ru-RU')}
+                          {result.completed_at ? new Date(result.completed_at).toLocaleString('ru-RU') : 'Время неизвестно'}
                         </p>
                       </div>
                     </div>

@@ -11,28 +11,34 @@ export type Database = {
     Tables: {
       quiz_results: {
         Row: {
+          answers: Json | null
           completed_at: string | null
           id: number
           percentage: number
           player_name: string
           score: number
           total_questions: number
+          updated_at: string | null
         }
         Insert: {
+          answers?: Json | null
           completed_at?: string | null
           id?: number
           percentage: number
           player_name: string
           score: number
           total_questions: number
+          updated_at?: string | null
         }
         Update: {
+          answers?: Json | null
           completed_at?: string | null
           id?: number
           percentage?: number
           player_name?: string
           score?: number
           total_questions?: number
+          updated_at?: string | null
         }
         Relationships: []
       }

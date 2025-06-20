@@ -3,31 +3,63 @@ import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Trophy, Medal, Award } from 'lucide-react';
+import { ArrowLeft, Trophy, Medal, Award, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface QuizResult {
-  name: string;
+  id?: number;
+  player_name: string;
   score: number;
-  total: number;
-  timestamp: string;
+  total_questions: number;
+  percentage: number;
+  completed_at: string;
   answers: boolean[];
 }
 
 const Results = () => {
   const [results, setResults] = useState<QuizResult[]>([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const fetchResults = async () => {
+    console.log('Загружаем результаты из Supabase...');
+    setLoading(true);
+    
+    try {
+      const { data, error } = await supabase
+        .from('quiz_results')
+        .select('*')
+        .order('score', { ascending: false })
+        .order('completed_at', { ascending: false });
+
+      if (error) {
+        console.error('Ошибка при загрузке результатов:', error);
+        toast({
+          title: "Ошибка загрузки",
+          description: `Не удалось загрузить результаты: ${error.message}`,
+          variant: "destructive"
+        });
+      } else {
+        console.log('Результаты успешно загружены:', data);
+        setResults(data || []);
+      }
+    } catch (err) {
+      console.error('Неожиданная ошибка при загрузке:', err);
+      toast({
+        title: "Ошибка",
+        description: "Произошла неожиданная ошибка при загрузке результатов",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const savedResults = JSON.parse(localStorage.getItem('quizResults') || '[]');
-    // Sort by score (descending) and then by timestamp (most recent first)
-    const sortedResults = savedResults.sort((a: QuizResult, b: QuizResult) => {
-      if (b.score !== a.score) {
-        return b.score - a.score;
-      }
-      return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
-    });
-    setResults(sortedResults);
+    fetchResults();
   }, []);
 
   const getRankIcon = (index: number) => {
@@ -51,9 +83,37 @@ const Results = () => {
     return "bg-red-500";
   };
 
-  const clearResults = () => {
-    localStorage.removeItem('quizResults');
-    setResults([]);
+  const clearResults = async () => {
+    console.log('Очищаем все результаты...');
+    try {
+      const { error } = await supabase
+        .from('quiz_results')
+        .delete()
+        .neq('id', 0); // Удаляем все записи
+
+      if (error) {
+        console.error('Ошибка при очистке результатов:', error);
+        toast({
+          title: "Ошибка",
+          description: `Не удалось очистить результаты: ${error.message}`,
+          variant: "destructive"
+        });
+      } else {
+        console.log('Результаты успешно очищены');
+        setResults([]);
+        toast({
+          title: "Результаты очищены",
+          description: "Все результаты викторины удалены",
+        });
+      }
+    } catch (err) {
+      console.error('Неожиданная ошибка при очистке:', err);
+      toast({
+        title: "Ошибка",
+        description: "Произошла неожиданная ошибка при очистке результатов",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
@@ -69,15 +129,27 @@ const Results = () => {
             Вернуться к игре
           </Button>
           
-          {results.length > 0 && (
+          <div className="flex gap-2">
             <Button 
-              onClick={clearResults}
-              variant="destructive"
+              onClick={fetchResults}
+              variant="outline"
               size="sm"
+              disabled={loading}
             >
-              Очистить результаты
+              <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+              Обновить
             </Button>
-          )}
+            
+            {results.length > 0 && (
+              <Button 
+                onClick={clearResults}
+                variant="destructive"
+                size="sm"
+              >
+                Очистить результаты
+              </Button>
+            )}
+          </div>
         </div>
 
         <Card className="shadow-2xl">
@@ -90,7 +162,12 @@ const Results = () => {
             </p>
           </CardHeader>
           <CardContent className="p-6">
-            {results.length === 0 ? (
+            {loading ? (
+              <div className="text-center py-12">
+                <div className="animate-spin h-8 w-8 border-4 border-purple-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                <p className="text-gray-600">Загружаем результаты...</p>
+              </div>
+            ) : results.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-gray-400 text-6xl mb-4">🎯</div>
                 <h3 className="text-xl font-semibold text-gray-600 mb-2">
@@ -110,7 +187,7 @@ const Results = () => {
               <div className="space-y-4">
                 {results.map((result, index) => (
                   <div
-                    key={index}
+                    key={result.id || index}
                     className={`flex items-center justify-between p-4 rounded-lg border-2 transition-all duration-200 ${
                       index < 3 
                         ? 'bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200 shadow-md' 
@@ -124,10 +201,10 @@ const Results = () => {
                       
                       <div>
                         <h3 className="font-semibold text-lg text-gray-800">
-                          {result.name}
+                          {result.player_name}
                         </h3>
                         <p className="text-sm text-gray-500">
-                          {new Date(result.timestamp).toLocaleString('ru-RU')}
+                          {new Date(result.completed_at).toLocaleString('ru-RU')}
                         </p>
                       </div>
                     </div>
@@ -135,19 +212,19 @@ const Results = () => {
                     <div className="flex items-center space-x-4">
                       <div className="text-right">
                         <div className="text-2xl font-bold text-gray-800">
-                          {result.score}/{result.total}
+                          {result.score}/{result.total_questions}
                         </div>
                         <div className="text-sm text-gray-500">
-                          {Math.round((result.score / result.total) * 100)}%
+                          {result.percentage}%
                         </div>
                       </div>
                       
                       <Badge 
-                        className={`${getScoreColor(result.score, result.total)} text-white px-3 py-1`}
+                        className={`${getScoreColor(result.score, result.total_questions)} text-white px-3 py-1`}
                       >
-                        {result.score >= result.total * 0.9 ? 'Отлично' :
-                         result.score >= result.total * 0.7 ? 'Хорошо' :
-                         result.score >= result.total * 0.5 ? 'Средне' : 'Плохо'}
+                        {result.score >= result.total_questions * 0.9 ? 'Отлично' :
+                         result.score >= result.total_questions * 0.7 ? 'Хорошо' :
+                         result.score >= result.total_questions * 0.5 ? 'Средне' : 'Плохо'}
                       </Badge>
                     </div>
                   </div>
@@ -167,7 +244,7 @@ const Results = () => {
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-green-600">
-                      {Math.round(results.reduce((acc, r) => acc + (r.score / r.total), 0) / results.length * 100)}%
+                      {Math.round(results.reduce((acc, r) => acc + (r.score / r.total_questions), 0) / results.length * 100)}%
                     </div>
                     <div className="text-sm text-gray-600">Средний балл</div>
                   </div>
@@ -179,7 +256,7 @@ const Results = () => {
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-orange-600">
-                      {results.filter(r => r.score === r.total).length}
+                      {results.filter(r => r.score === r.total_questions).length}
                     </div>
                     <div className="text-sm text-gray-600">Максимальных баллов</div>
                   </div>

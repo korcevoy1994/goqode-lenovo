@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowRight, CheckCircle, XCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from "@/integrations/supabase/client";
 
 const questions = [
   {
@@ -123,24 +123,51 @@ const Quiz = () => {
     setAnswers(newAnswers);
     setShowResult(true);
 
-    setTimeout(() => {
+    setTimeout(async () => {
       if (currentQuestion < questions.length - 1) {
         setCurrentQuestion(currentQuestion + 1);
         setSelectedAnswer(null);
         setShowResult(false);
       } else {
-        // Save results to localStorage (later we'll use Supabase)
+        // Сохранение результатов в Supabase
         const result = {
-          name: playerName,
+          player_name: playerName,
           score: newAnswers.filter(a => a).length,
-          total: questions.length,
-          timestamp: new Date().toISOString(),
+          total_questions: questions.length,
+          percentage: Math.round((newAnswers.filter(a => a).length / questions.length) * 100),
           answers: newAnswers
         };
         
-        const existingResults = JSON.parse(localStorage.getItem('quizResults') || '[]');
-        existingResults.push(result);
-        localStorage.setItem('quizResults', JSON.stringify(existingResults));
+        console.log('Сохраняем результат в Supabase:', result);
+        
+        try {
+          const { data, error } = await supabase
+            .from('quiz_results')
+            .insert([result])
+            .select();
+          
+          if (error) {
+            console.error('Ошибка при сохранении в Supabase:', error);
+            toast({
+              title: "Ошибка сохранения",
+              description: `Не удалось сохранить результат: ${error.message}`,
+              variant: "destructive"
+            });
+          } else {
+            console.log('Результат успешно сохранен в Supabase:', data);
+            toast({
+              title: "Результат сохранен",
+              description: "Ваш результат успешно записан в таблицу лидеров!",
+            });
+          }
+        } catch (err) {
+          console.error('Неожиданная ошибка:', err);
+          toast({
+            title: "Ошибка",
+            description: "Произошла неожиданная ошибка при сохранении",
+            variant: "destructive"
+          });
+        }
         
         setGameComplete(true);
       }

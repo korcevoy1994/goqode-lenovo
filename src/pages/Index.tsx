@@ -146,7 +146,7 @@ const Index = () => {
             Викторина создана для демонстрации знаний о компании Lenovo
           </p>
           <p className="text-gray-400 text-sm mt-2">
-            © 2024 Lenovo Quiz. Все права защищены.
+            © 2025 goQode. Все права защищены.
           </p>
         </div>
       </div>

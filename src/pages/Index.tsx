@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -106,7 +105,7 @@ const Index = () => {
         </div>
 
         {/* About Section */}
-        <Card className="shadow-xl">
+        {/* <Card className="shadow-xl">
           <CardHeader className="bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-t-lg">
             <CardTitle className="text-2xl font-bold text-center">
               О викторине
@@ -137,7 +136,7 @@ const Index = () => {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
 
       {/* Footer */}

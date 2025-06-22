@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,6 +26,7 @@ const Results = () => {
         .from('quiz_results')
         .select('*')
         .order('score', { ascending: false })
+        .order('duration_seconds', { ascending: true })
         .order('completed_at', { ascending: false });
 
       if (error) {
@@ -38,6 +38,15 @@ const Results = () => {
         });
       } else {
         console.log('Результаты успешно загружены:', data);
+        console.log('Проверяем photo_url в результатах:');
+        data?.forEach((result, index) => {
+          console.log(`Результат ${index + 1}:`, {
+            id: result.id,
+            player_name: result.player_name,
+            photo_url: result.photo_url,
+            has_photo: !!result.photo_url
+          });
+        });
         setResults(data || []);
       }
     } catch (err) {
@@ -133,16 +142,6 @@ const Results = () => {
               <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
               Обновить
             </Button>
-            
-            {results.length > 0 && (
-              <Button 
-                onClick={clearResults}
-                variant="destructive"
-                size="sm"
-              >
-                Очистить результаты
-              </Button>
-            )}
           </div>
         </div>
 
@@ -192,7 +191,9 @@ const Results = () => {
                       <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gray-100">
                         {getRankIcon(index)}
                       </div>
-                      
+                      {result.photo_url && (
+                        <img src={result.photo_url} alt="Фото" className="w-12 h-12 rounded-full object-cover border ml-2" />
+                      )}
                       <div>
                         <h3 className="font-semibold text-lg text-gray-800">
                           {result.player_name}
@@ -200,6 +201,11 @@ const Results = () => {
                         <p className="text-sm text-gray-500">
                           {result.completed_at ? new Date(result.completed_at).toLocaleString('ru-RU') : 'Время неизвестно'}
                         </p>
+                        {result.duration_seconds !== null && (
+                          <p className="text-sm text-gray-500">
+                            Время: {result.duration_seconds} сек
+                          </p>
+                        )}
                       </div>
                     </div>
 

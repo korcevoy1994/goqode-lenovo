@@ -19,6 +19,8 @@ export type Database = {
           score: number
           total_questions: number
           updated_at: string | null
+          photo_url: string | null
+          duration_seconds: number | null
         }
         Insert: {
           answers?: Json | null
@@ -29,6 +31,8 @@ export type Database = {
           score: number
           total_questions: number
           updated_at?: string | null
+          photo_url?: string | null
+          duration_seconds?: number | null
         }
         Update: {
           answers?: Json | null
@@ -39,6 +43,8 @@ export type Database = {
           score?: number
           total_questions?: number
           updated_at?: string | null
+          photo_url?: string | null
+          duration_seconds?: number | null
         }
         Relationships: []
       }

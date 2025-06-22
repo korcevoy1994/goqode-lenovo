@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { ArrowRight, CheckCircle, XCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from "@/integrations/supabase/client";
+import CameraCapture from "@/components/ui/CameraCapture";
 
 const questions = [
   {
@@ -90,6 +91,11 @@ const Quiz = () => {
   const [gameComplete, setGameComplete] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [showCamera, setShowCamera] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [resultId, setResultId] = useState<number | null>(null);
+  const [startTime, setStartTime] = useState<Date | null>(null);
 
   const startGame = () => {
     if (!playerName.trim()) {
@@ -100,6 +106,7 @@ const Quiz = () => {
       });
       return;
     }
+    setStartTime(new Date());
     setGameStarted(true);
   };
 
@@ -129,13 +136,16 @@ const Quiz = () => {
         setSelectedAnswer(null);
         setShowResult(false);
       } else {
-        // Сохранение результатов в Supabase
+        const endTime = new Date();
+        const durationInSeconds = Math.round((endTime.getTime() - (startTime?.getTime() || endTime.getTime())) / 1000);
+
         const result = {
           player_name: playerName,
           score: newAnswers.filter(a => a).length,
           total_questions: questions.length,
           percentage: Math.round((newAnswers.filter(a => a).length / questions.length) * 100),
-          answers: newAnswers
+          answers: newAnswers,
+          duration_seconds: durationInSeconds
         };
         
         console.log('Сохраняем результат в Supabase:', result);
@@ -153,12 +163,9 @@ const Quiz = () => {
               description: `Не удалось сохранить результат: ${error.message}`,
               variant: "destructive"
             });
-          } else {
-            console.log('Результат успешно сохранен в Supabase:', data);
-            toast({
-              title: "Результат сохранен",
-              description: "Ваш результат успешно записан в таблицу лидеров!",
-            });
+          } else if (data && data[0]) {
+            setResultId(data[0].id);
+            setShowCamera(true);
           }
         } catch (err) {
           console.error('Неожиданная ошибка:', err);
@@ -218,6 +225,92 @@ const Quiz = () => {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (gameComplete && showCamera && resultId) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <Card className="w-full max-w-md shadow-2xl">
+          <CardHeader className="text-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-t-lg">
+            <CardTitle className="text-2xl font-bold">Сделайте фото для результата</CardTitle>
+          </CardHeader>
+          <CardContent className="p-8 flex flex-col items-center">
+            <CameraCapture onCapture={async (blob) => {
+              console.log('Начинаем загрузку фото...');
+              console.log('Blob size:', blob.size);
+              console.log('Blob type:', blob.type);
+              
+              setUploading(true);
+              const fileName = `quiz_photos/${resultId}_${Date.now()}.jpg`;
+              console.log('Имя файла:', fileName);
+              
+              try {
+                const { data, error } = await supabase.storage.from('photos').upload(fileName, blob, { 
+                  upsert: true, 
+                  contentType: 'image/jpeg' 
+                });
+                
+                if (error) {
+                  console.error('Ошибка загрузки в Supabase Storage:', error);
+                  toast({ 
+                    title: 'Ошибка загрузки', 
+                    description: error.message, 
+                    variant: 'destructive' 
+                  });
+                  setUploading(false);
+                  return;
+                }
+                
+                console.log('Фото успешно загружено:', data);
+                
+                const { data: publicUrlData } = supabase.storage.from('photos').getPublicUrl(fileName);
+                const url = publicUrlData.publicUrl;
+                console.log('Публичная ссылка:', url);
+                
+                setPhotoUrl(url);
+                
+                console.log('Обновляем запись с ID:', resultId, 'photo_url:', url);
+                
+                const { data: updateData, error: updateError } = await supabase
+                  .from('quiz_results')
+                  .update({ photo_url: url })
+                  .eq('id', resultId)
+                  .select();
+                
+                console.log('Результат обновления:', { updateData, updateError });
+                
+                if (updateError) {
+                  console.error('Ошибка обновления записи:', updateError);
+                  toast({ 
+                    title: 'Ошибка обновления', 
+                    description: updateError.message, 
+                    variant: 'destructive' 
+                  });
+                } else {
+                  console.log('Запись успешно обновлена:', updateData);
+                  toast({
+                    title: "Фото загружено",
+                    description: "Ваше фото успешно добавлено к результату!",
+                  });
+                }
+                
+              } catch (err) {
+                console.error('Неожиданная ошибка при загрузке:', err);
+                toast({ 
+                  title: 'Неожиданная ошибка', 
+                  description: 'Произошла ошибка при загрузке фото', 
+                  variant: 'destructive' 
+                });
+              }
+              
+              setUploading(false);
+              setShowCamera(false);
+            }} />
+            {uploading && <div className="mt-4 text-blue-600">Загрузка фото...</div>}
           </CardContent>
         </Card>
       </div>

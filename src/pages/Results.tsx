@@ -120,61 +120,57 @@ const Results = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 p-4">
+    <div className="min-h-screen p-4" style={{ background: 'radial-gradient(ellipse at 80% 40%, #6B183A 0%, #4B2067 60%, #1a1333 100%)' }}>
       <div className="max-w-4xl mx-auto">
         <div className="mb-6 flex items-center justify-between">
-          <Button 
+          <button
             onClick={() => navigate('/')}
-            variant="outline"
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 bg-white text-[#1a1333] font-bold rounded-xl shadow hover:bg-gray-100 transition px-4 py-2 border-none"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-4 w-4 text-[#e2231a]" />
             Вернуться к игре
-          </Button>
-          
+          </button>
           <div className="flex gap-2">
-            <Button 
+            <button
               onClick={fetchResults}
-              variant="outline"
-              size="sm"
+              className="bg-white text-[#1a1333] font-bold rounded-xl shadow hover:bg-gray-100 transition px-4 py-2 border-none text-sm flex items-center gap-2"
               disabled={loading}
             >
-              <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-              Обновить
-            </Button>
+              <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''} text-[#e2231a]`} />
+              <span>Обновить</span>
+            </button>
           </div>
         </div>
-
-        <Card className="shadow-2xl">
-          <CardHeader className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-t-lg">
-            <CardTitle className="text-2xl font-bold text-center">
+        <div className="shadow-2xl rounded-2xl bg-white">
+          <div className="bg-gradient-to-r from-[#6B183A] to-[#4B2067] text-white rounded-t-2xl p-6">
+            <div className="text-2xl font-bold text-center">
               🏆 Таблица лидеров
-            </CardTitle>
-            <p className="text-center text-purple-100">
-              Результаты всех участников викторины Lenovo
+            </div>
+            <p className="text-center text-[#f5f5f7]">
+              Результаты всех участников <span className="accent">Lenovo Quiz</span>
             </p>
-          </CardHeader>
-          <CardContent className="p-6">
+          </div>
+          <div className="p-6">
             {loading ? (
               <div className="text-center py-12">
-                <div className="animate-spin h-8 w-8 border-4 border-purple-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-                <p className="text-gray-600">Загружаем результаты...</p>
+                <div className="animate-spin h-8 w-8 border-4 border-[#e2231a] border-t-transparent rounded-full mx-auto mb-4"></div>
+                <p className="text-[#4B2067]">Загружаем результаты...</p>
               </div>
             ) : results.length === 0 ? (
               <div className="text-center py-12">
-                <div className="text-gray-400 text-6xl mb-4">🎯</div>
-                <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                <div className="text-[#e2231a] text-6xl mb-4">🎯</div>
+                <h3 className="text-xl font-semibold text-[#4B2067] mb-2">
                   Пока нет результатов
                 </h3>
-                <p className="text-gray-500">
+                <p className="text-[#6B183A]">
                   Станьте первым, кто пройдет викторину!
                 </p>
-                <Button 
+                <button
                   onClick={() => navigate('/')}
-                  className="mt-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+                  className="mt-4 bg-white text-[#1a1333] font-bold rounded-xl shadow hover:bg-gray-100 transition px-6 py-3"
                 >
                   Начать викторину
-                </Button>
+                </button>
               </div>
             ) : (
               <div className="space-y-4">
@@ -182,44 +178,42 @@ const Results = () => {
                   <div
                     key={result.id}
                     className={`flex items-center justify-between p-4 rounded-lg border-2 transition-all duration-200 ${
-                      index < 3 
-                        ? 'bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200 shadow-md' 
-                        : 'bg-white border-gray-200 hover:border-gray-300'
+                      index < 3
+                        ? 'bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200 shadow-md'
+                        : 'bg-white border-[#e5e7eb] hover:border-[#4B2067]'
                     }`}
                   >
                     <div className="flex items-center space-x-4">
-                      <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gray-100">
+                      <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#f5f5f7]">
                         {getRankIcon(index)}
                       </div>
                       {result.photo_url && (
                         <img src={result.photo_url} alt="Фото" className="w-12 h-12 rounded-full object-cover border ml-2" />
                       )}
                       <div>
-                        <h3 className="font-semibold text-lg text-gray-800">
+                        <h3 className="font-semibold text-lg text-[#1a1333]">
                           {result.player_name}
                         </h3>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-[#4B2067]">
                           {result.completed_at ? new Date(result.completed_at).toLocaleString('ru-RU') : 'Время неизвестно'}
                         </p>
                         {result.duration_seconds !== null && (
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-[#6B183A]">
                             Время: {result.duration_seconds} сек
                           </p>
                         )}
                       </div>
                     </div>
-
                     <div className="flex items-center space-x-4">
                       <div className="text-right">
-                        <div className="text-2xl font-bold text-gray-800">
+                        <div className="text-2xl font-bold text-[#e2231a]">
                           {result.score}/{result.total_questions}
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-[#4B2067]">
                           {result.percentage}%
                         </div>
                       </div>
-                      
-                      <Badge 
+                      <Badge
                         className={`${getScoreColor(result.score, result.total_questions)} text-white px-3 py-1`}
                       >
                         {result.score >= result.total_questions * 0.9 ? 'Отлично' :
@@ -231,40 +225,39 @@ const Results = () => {
                 ))}
               </div>
             )}
-            
             {results.length > 0 && (
-              <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-                <h4 className="font-semibold text-gray-800 mb-2">Статистика:</h4>
+              <div className="mt-8 p-4 bg-[#f5f5f7] rounded-lg">
+                <h4 className="font-semibold text-[#1a1333] mb-2">Статистика:</h4>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                   <div>
-                    <div className="text-2xl font-bold text-blue-600">
+                    <div className="text-2xl font-bold text-[#4B2067]">
                       {results.length}
                     </div>
-                    <div className="text-sm text-gray-600">Участников</div>
+                    <div className="text-sm text-[#6B183A]">Участников</div>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-green-600">
+                    <div className="text-2xl font-bold text-[#e2231a]">
                       {Math.round(results.reduce((acc, r) => acc + (r.score / r.total_questions), 0) / results.length * 100)}%
                     </div>
-                    <div className="text-sm text-gray-600">Средний балл</div>
+                    <div className="text-sm text-[#6B183A]">Средний балл</div>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-purple-600">
+                    <div className="text-2xl font-bold text-[#6B183A]">
                       {Math.max(...results.map(r => r.score))}
                     </div>
-                    <div className="text-sm text-gray-600">Лучший результат</div>
+                    <div className="text-sm text-[#4B2067]">Лучший результат</div>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-orange-600">
+                    <div className="text-2xl font-bold text-[#e2231a]">
                       {results.filter(r => r.score === r.total_questions).length}
                     </div>
-                    <div className="text-sm text-gray-600">Максимальных баллов</div>
+                    <div className="text-sm text-[#6B183A]">Максимальных баллов</div>
                   </div>
                 </div>
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   );

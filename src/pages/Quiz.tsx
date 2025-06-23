@@ -197,16 +197,16 @@ const Quiz = () => {
 
   if (!gameStarted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md shadow-2xl">
-          <CardHeader className="text-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-t-lg">
-            <CardTitle className="text-2xl font-bold">Викторина Lenovo</CardTitle>
-            <p className="text-blue-100">Проверьте свои знания о компании Lenovo</p>
-          </CardHeader>
-          <CardContent className="p-8">
+      <div className="min-h-screen flex items-center justify-center p-4" style={{ background: 'radial-gradient(ellipse at 80% 40%, #6B183A 0%, #4B2067 60%, #1a1333 100%)' }}>
+        <div className="card w-full max-w-md shadow-2xl">
+          <div className="text-center bg-gradient-to-r from-[#6B183A] to-[#4B2067] text-white rounded-t-lg p-6">
+            <div className="text-2xl font-bold">Lenovo <span className="accent">Quiz</span></div>
+            <p className="text-[#f5f5f7]">Проверьте свои знания о компании <span className="accent">Lenovo</span></p>
+          </div>
+          <div className="p-8">
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-[#f5f5f7] mb-2">
                   Введите ваше имя
                 </label>
                 <Input
@@ -217,28 +217,28 @@ const Quiz = () => {
                   onKeyPress={(e) => e.key === 'Enter' && startGame()}
                 />
               </div>
-              <Button 
+              <button
                 onClick={startGame}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-lg py-3"
+                className="w-full text-lg py-3 bg-white text-[#1a1333] font-bold rounded-xl shadow hover:bg-gray-100 transition border-none"
               >
                 Начать игру
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+                <ArrowRight className="ml-2 h-5 w-5 text-[#e2231a] inline" />
+              </button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (gameComplete && showCamera && resultId) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <Card className="w-full max-w-md shadow-2xl">
-          <CardHeader className="text-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-t-lg">
-            <CardTitle className="text-2xl font-bold">Сделайте фото для результата</CardTitle>
-          </CardHeader>
-          <CardContent className="p-8 flex flex-col items-center">
+      <div className="min-h-screen flex items-center justify-center p-4" style={{ background: 'radial-gradient(ellipse at 80% 40%, #6B183A 0%, #4B2067 60%, #1a1333 100%)' }}>
+        <div className="card w-full max-w-md shadow-2xl">
+          <div className="text-center bg-gradient-to-r from-[#6B183A] to-[#4B2067] text-white rounded-t-lg p-6">
+            <div className="text-2xl font-bold">Сделайте фото для результата</div>
+          </div>
+          <div className="p-8 flex flex-col items-center">
             <CameraCapture onCapture={async (blob) => {
               console.log('Начинаем загрузку фото...');
               console.log('Blob size:', blob.size);
@@ -310,9 +310,9 @@ const Quiz = () => {
               setUploading(false);
               setShowCamera(false);
             }} />
-            {uploading && <div className="mt-4 text-blue-600">Загрузка фото...</div>}
-          </CardContent>
-        </Card>
+            {uploading && <div className="mt-4 text-[#e2231a]">Загрузка фото...</div>}
+          </div>
+        </div>
       </div>
     );
   }
@@ -322,52 +322,49 @@ const Quiz = () => {
     const percentage = Math.round((correctAnswers / questions.length) * 100);
     
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
-        <Card className="w-full max-w-2xl shadow-2xl">
-          <CardHeader className="text-center bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-t-lg">
-            <CardTitle className="text-3xl font-bold">Игра завершена!</CardTitle>
-            <p className="text-green-100">Поздравляем, {playerName}!</p>
-          </CardHeader>
-          <CardContent className="p-8">
+      <div className="min-h-screen flex items-center justify-center p-4" style={{ background: 'radial-gradient(ellipse at 80% 40%, #6B183A 0%, #4B2067 60%, #1a1333 100%)' }}>
+        <div className="card w-full max-w-2xl shadow-2xl">
+          <div className="text-center bg-gradient-to-r from-[#6B183A] to-[#4B2067] text-white rounded-t-lg p-6">
+            <div className="text-3xl font-bold">Игра завершена!</div>
+            <p className="text-[#f5f5f7]">Поздравляем, {playerName}!</p>
+          </div>
+          <div className="p-8">
             <div className="text-center space-y-6">
-              <div className="text-6xl font-bold text-gray-800">
+              <div className="text-6xl font-bold text-[#e2231a]">
                 {correctAnswers}/{questions.length}
               </div>
-              <div className="text-xl text-gray-600">
+              <div className="text-xl text-[#f5f5f7]">
                 Правильных ответов: {percentage}%
               </div>
-              
               <div className="grid gap-2 mt-6">
                 {questions.map((question, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
-                    <span className="text-sm text-gray-700">Вопрос {index + 1}</span>
+                  <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-[#1a1333]">
+                    <span className="text-sm text-[#f5f5f7]">Вопрос {index + 1}</span>
                     {answers[index] ? (
-                      <CheckCircle className="h-5 w-5 text-green-500" />
+                      <CheckCircle className="h-5 w-5 text-[#e2231a]" />
                     ) : (
-                      <XCircle className="h-5 w-5 text-red-500" />
+                      <XCircle className="h-5 w-5 text-[#6B183A]" />
                     )}
                   </div>
                 ))}
               </div>
-
               <div className="flex gap-4 mt-8">
-                <Button 
+                <button
                   onClick={restartGame}
-                  className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                  className="flex-1 bg-white text-[#1a1333] font-bold rounded-xl shadow hover:bg-gray-100 transition text-lg py-3"
                 >
                   Играть снова
-                </Button>
-                <Button 
+                </button>
+                <button
                   onClick={viewResults}
-                  variant="outline"
-                  className="flex-1"
+                  className="flex-1 bg-white text-[#1a1333] font-bold rounded-xl shadow hover:bg-gray-100 transition text-lg py-3"
                 >
                   Посмотреть результаты
-                </Button>
+                </button>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
@@ -376,46 +373,43 @@ const Quiz = () => {
   const progress = ((currentQuestion + 1) / questions.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screen p-4" style={{ background: 'radial-gradient(ellipse at 80% 40%, #6B183A 0%, #4B2067 60%, #1a1333 100%)' }}>
       <div className="max-w-4xl mx-auto">
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-medium text-gray-600">Игрок: {playerName}</span>
-            <span className="text-sm text-gray-600">
+            <span className="text-sm font-medium text-[#f5f5f7]">Игрок: {playerName}</span>
+            <span className="text-sm text-[#f5f5f7]">
               Вопрос {currentQuestion + 1} из {questions.length}
             </span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div 
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2 rounded-full transition-all duration-300"
+          <div className="w-full bg-[#4B2067] rounded-full h-2">
+            <div
+              className="bg-gradient-to-r from-[#e2231a] to-[#6B183A] h-2 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             ></div>
           </div>
         </div>
-
-        <Card className="shadow-2xl">
-          <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-t-lg">
-            <CardTitle className="text-xl">{currentQ.question}</CardTitle>
-          </CardHeader>
-          <CardContent className="p-8">
+        <div className="shadow-2xl rounded-2xl bg-white">
+          <div className="bg-gradient-to-r from-[#6B183A] to-[#4B2067] text-white rounded-t-2xl p-6">
+            <div className="text-xl">{currentQ.question}</div>
+          </div>
+          <div className="p-8">
             <div className="grid gap-4">
               {currentQ.options.map((option, index) => {
                 let buttonClass = "p-4 text-left border-2 rounded-lg transition-all duration-200 ";
-                
                 if (showResult) {
                   if (index === currentQ.correctAnswer) {
-                    buttonClass += "bg-green-100 border-green-500 text-green-800";
+                    buttonClass += "bg-green-100 text-green-800 border-green-500 font-bold";
                   } else if (index === selectedAnswer && index !== currentQ.correctAnswer) {
-                    buttonClass += "bg-red-100 border-red-500 text-red-800";
+                    buttonClass += "bg-red-100 text-red-800 border-red-500 font-bold";
                   } else {
-                    buttonClass += "bg-gray-100 border-gray-300 text-gray-600";
+                    buttonClass += "bg-white text-[#1a1333] border-[#e5e7eb]";
                   }
                 } else if (selectedAnswer === index) {
-                  buttonClass += "bg-blue-100 border-blue-500 text-blue-800";
+                  buttonClass += "bg-blue-100 text-blue-800 border-blue-500 font-bold";
                 } else {
-                  buttonClass += "bg-white border-gray-300 hover:border-blue-400 hover:bg-blue-50";
+                  buttonClass += "bg-white text-[#1a1333] border-[#e5e7eb] hover:bg-gray-100";
                 }
-
                 return (
                   <button
                     key={index}
@@ -424,7 +418,7 @@ const Quiz = () => {
                     disabled={showResult}
                   >
                     <div className="flex items-center">
-                      <span className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-3 text-sm font-medium">
+                      <span className="w-8 h-8 rounded-full bg-[#e2231a] flex items-center justify-center mr-3 text-sm font-medium text-white">
                         {String.fromCharCode(65 + index)}
                       </span>
                       {option}
@@ -439,28 +433,26 @@ const Quiz = () => {
                 );
               })}
             </div>
-
             {showResult && (
-              <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                <p className="text-blue-800 font-medium">
+              <div className="mt-6 p-4 bg-[#4B2067] rounded-lg">
+                <p className="text-[#f5f5f7] font-medium">
                   {currentQ.explanation}
                 </p>
               </div>
             )}
-
             {!showResult && (
               <div className="mt-8 text-center">
-                <Button 
+                <button
                   onClick={submitAnswer}
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 px-8 py-3 text-lg"
+                  className="bg-white text-[#1a1333] font-bold rounded-xl shadow hover:bg-gray-100 transition px-8 py-3 text-lg"
                   disabled={selectedAnswer === null}
                 >
                   Ответить
-                </Button>
+                </button>
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -8,16 +8,16 @@ const Index = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <div className="min-h-screen" style={{ background: 'radial-gradient(ellipse at 80% 40%, #6B183A 0%, #4B2067 60%, #1a1333 100%)' }}>
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl">
+      <div className="bg-gradient-to-r from-[#6B183A] to-[#4B2067] text-white shadow-xl">
         <div className="max-w-6xl mx-auto px-4 py-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              Викторина Lenovo
+              Lenovo <span className="accent">Quiz</span>
             </h1>
-            <p className="text-xl md:text-2xl text-blue-100 mb-8">
-              Проверьте свои знания о мировом лидере в области технологий
+            <p className="text-xl md:text-2xl text-[#f5f5f7] mb-8">
+              Проверьте свои знания о компании <span className="accent">Lenovo</span> в увлекательной викторине!
             </p>
           </div>
         </div>
@@ -27,81 +27,78 @@ const Index = () => {
       <div className="max-w-6xl mx-auto px-4 py-12">
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           {/* Game Card */}
-          <Card className="shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2">
-            <CardHeader className="bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-t-lg">
-              <CardTitle className="text-2xl font-bold flex items-center">
-                <Play className="mr-3 h-8 w-8" />
+          <div className="card shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2">
+            <div className="bg-gradient-to-r from-[#e2231a] to-[#4B2067] text-white rounded-t-lg p-6">
+              <div className="text-2xl font-bold flex items-center">
+                <span className="mr-3 h-8 w-8">🎮</span>
                 Начать игру
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-8">
+              </div>
+            </div>
+            <div className="p-8">
               <div className="space-y-4">
-                <p className="text-gray-600 text-lg">
-                  Ответьте на 10 вопросов о компании Lenovo и покажите свои знания!
+                <p className="text-[#f5f5f7] text-lg">
+                  Ответьте на 10 вопросов о компании <span className="accent">Lenovo</span> и покажите свои знания!
                 </p>
-                <ul className="space-y-2 text-gray-600">
+                <ul className="space-y-2 text-[#f5f5f7]">
                   <li className="flex items-center">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
+                    <div className="w-2 h-2 bg-[#e2231a] rounded-full mr-3"></div>
                     10 увлекательных вопросов
                   </li>
                   <li className="flex items-center">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                    <div className="w-2 h-2 bg-[#4B2067] rounded-full mr-3"></div>
                     Мгновенная обратная связь
                   </li>
                   <li className="flex items-center">
-                    <div className="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
+                    <div className="w-2 h-2 bg-[#6B183A] rounded-full mr-3"></div>
                     Подробная статистика
                   </li>
                 </ul>
-                <Button 
+                <button 
                   onClick={() => navigate('/quiz')}
-                  className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-lg py-3 mt-6"
+                  className="w-full text-lg py-3 mt-6 bg-white text-[#1a1333] font-bold rounded-xl shadow hover:bg-gray-100 transition border-none"
                 >
-                  <Play className="mr-2 h-5 w-5" />
                   Играть сейчас
-                </Button>
+                </button>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Results Card */}
-          <Card className="shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2">
-            <CardHeader className="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-t-lg">
-              <CardTitle className="text-2xl font-bold flex items-center">
-                <Trophy className="mr-3 h-8 w-8" />
+          <div className="card shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2">
+            <div className="bg-gradient-to-r from-[#4B2067] to-[#e2231a] text-white rounded-t-lg p-6">
+              <div className="text-2xl font-bold flex items-center">
+                <span className="mr-3 h-8 w-8">🏆</span>
                 Таблица лидеров
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-8">
+              </div>
+            </div>
+            <div className="p-8">
               <div className="space-y-4">
-                <p className="text-gray-600 text-lg">
-                  Посмотрите результаты всех участников викторины и найдите себя в рейтинге!
+                <p className="text-[#f5f5f7] text-lg">
+                  Посмотрите результаты всех участников <span className="accent">Lenovo Quiz</span> и найдите себя в рейтинге!
                 </p>
-                <ul className="space-y-2 text-gray-600">
+                <ul className="space-y-2 text-[#f5f5f7]">
                   <li className="flex items-center">
-                    <div className="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
+                    <div className="w-2 h-2 bg-[#4B2067] rounded-full mr-3"></div>
                     Рейтинг всех игроков
                   </li>
                   <li className="flex items-center">
-                    <div className="w-2 h-2 bg-pink-500 rounded-full mr-3"></div>
+                    <div className="w-2 h-2 bg-[#e2231a] rounded-full mr-3"></div>
                     Общая статистика
                   </li>
                   <li className="flex items-center">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full mr-3"></div>
+                    <div className="w-2 h-2 bg-[#6B183A] rounded-full mr-3"></div>
                     История результатов
                   </li>
                 </ul>
-                <Button 
+                <button 
                   onClick={() => navigate('/results')}
-                  variant="outline"
-                  className="w-full border-2 border-purple-500 text-purple-600 hover:bg-purple-500 hover:text-white text-lg py-3 mt-6"
+                  className="w-full text-lg py-3 mt-6 bg-white text-[#1a1333] font-bold rounded-xl shadow hover:bg-gray-100 transition border-none"
                 >
-                  <Trophy className="mr-2 h-5 w-5"  />
                   Посмотреть результаты
-                </Button>
+                </button>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
 
         {/* About Section */}
@@ -140,13 +137,13 @@ const Index = () => {
       </div>
 
       {/* Footer */}
-      <div className="bg-gray-800 text-white py-8 mt-12">
+      <div className="bg-[#1a1333] text-white py-8 mt-12">
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <p className="text-gray-300">
-            Викторина создана для демонстрации знаний о компании Lenovo
+          <p className="text-[#f5f5f7]">
+            Lenovo Quiz — Smarter AI for all
           </p>
           <p className="text-gray-400 text-sm mt-2">
-            © 2025 goQode. Все права защищены.
+            © 2025 Lenovo. Все права защищены.
           </p>
         </div>
       </div>

@@ -13,71 +13,101 @@ const questions = [
     id: 1,
     question: "В каком году была основана компания Lenovo?",
     options: ["1980", "1984", "1990", "1995"],
-    correctAnswer: 1, // index 1 = "1984"
-    explanation: "Компания Lenovo была основана в 1984 году"
+    correctAnswer: 1, // Б
+    explanation: "Компания Lenovo была основана в 1984 году."
   },
   {
     id: 2,
-    question: "Как называется платформа Lenovo для edge-компьютинга с поддержкой ИИ?",
-    options: ["ThinkAI", "Lenovo Edge", "ThinkEdge", "SmartCompute"],
-    correctAnswer: 2,
-    explanation: "ThinkEdge - это платформа Lenovo для граничных вычислений с поддержкой ИИ"
+    question: "В скольких странах работает Lenovo по всему миру?",
+    options: ["60", "100", "180", "200"],
+    correctAnswer: 1, // Б
+    explanation: "Lenovo работает более чем в 100 странах по всему миру."
   },
   {
     id: 3,
-    question: "В скольких странах работает Lenovo по всему миру?",
-    options: ["60", "100", "160", "200"],
-    correctAnswer: 2,
-    explanation: "Lenovo работает в 160 странах по всему миру"
+    question: "Какой крупный турнир FIFA поддерживает Lenovo в рамках партнёрства?",
+    options: [
+      "Чемпионат Европы УЕФА 2024",
+      "Чемпионат мира FIFA 2026™",
+      "Кубок Америки 2024",
+      "Кубок Азии AFC 2027"
+    ],
+    correctAnswer: 1, // Б
+    explanation: "Lenovo поддерживает Чемпионат мира FIFA 2026™."
   },
   {
     id: 4,
-    question: "Как звучит видение Lenovo по развитию технологий?",
-    options: ["Умные технологии для всех", "Инновации для будущего", "Сила прогресса", "Технологии для жизни"],
-    correctAnswer: 0,
-    explanation: "Видение Lenovo: 'Умные технологии для всех'"
+    question: "Какая инновация Lenovo помогает FIFA принимать решения в режиме реального времени?",
+    options: [
+      "Информационные панели Lenovo на базе ИИ",
+      "Умные термостаты",
+      "Беспроводные наушники",
+      "Цифровые судьи"
+    ],
+    correctAnswer: 0, // А
+    explanation: "Информационные панели Lenovo на базе ИИ помогают FIFA принимать решения в реальном времени."
   },
   {
     id: 5,
-    question: "На защиту чего направлена платформа безопасности ThinkShield?",
-    options: ["Только аппаратуры", "Только ПО", "Устройств и данных (End-to-end devices and data)", "Только облачных сервисов"],
-    correctAnswer: 2,
-    explanation: "ThinkShield обеспечивает комплексную защиту устройств и данных"
+    question: "Платформа безопасности ThinkShield использована на защиту:",
+    options: [
+      "Только аппаратуры",
+      "Только ПО",
+      "Устройств и данных (End-to-end devices and data)",
+      "Только облачных сервисов"
+    ],
+    correctAnswer: 2, // В
+    explanation: "ThinkShield обеспечивает защиту устройств и данных (End-to-end devices and data)."
   },
   {
     id: 6,
-    question: "Для чего служит услуга CO2 Offset от Lenovo?",
-    options: ["Уменьшение веса устройства", "Компенсация углеродного следа за производство и доставку устройств", "Повышение срока службы батареи", "Увеличение скорости обработки"],
-    correctAnswer: 1,
-    explanation: "CO2 Offset помогает компенсировать углеродный след производства и доставки"
+    question: "Какая платформа Lenovo предназначена для «умных» переговорных комнат?",
+    options: ["ThinkSmart", "SmartOffice", "Lenovo Meet", "ThinkConnect"],
+    correctAnswer: 0, // А
+    explanation: "ThinkSmart — платформа Lenovo для умных переговорных комнат."
   },
   {
     id: 7,
-    question: "Какая платформа Lenovo предназначена для «умных» переговорных комнат?",
-    options: ["ThinkSmart", "SmartOffice", "Lenovo Meet", "ThinkConnect"],
-    correctAnswer: 0,
-    explanation: "ThinkSmart - это решение Lenovo для умных переговорных комнат"
+    question: "Как называется глобальная партнёрская программа Lenovo?",
+    options: ["Lenovo Alliance", "Lenovo 360", "PartnerFirst", "ThinkPartner"],
+    correctAnswer: 1, // Б
+    explanation: "Lenovo 360 — глобальная партнёрская программа Lenovo."
   },
   {
     id: 8,
-    question: "Как называется глобальная партнёрская программа Lenovo?",
-    options: ["Lenovo Alliance", "Lenovo 360", "PartnerFirst", "ThinkPartner"],
-    correctAnswer: 1,
-    explanation: "Lenovo 360 - это глобальная партнерская программа компании"
+    question: "В рамках партнерства Lenovo и Formula 1, какой продукт Lenovo используется создателями контента Формулы-1 для редактирования и рендеринга?",
+    options: [
+      "ThinkPad X1 Yoga",
+      "Рабочие станции ThinkStation",
+      "Legion 9",
+      "ThinkPad X1 Carbon"
+    ],
+    correctAnswer: 1, // Б
+    explanation: "Рабочие станции ThinkStation используются для редактирования и рендеринга контента Формулы-1."
   },
   {
     id: 9,
-    question: "Какая инновация от Lenovo была представлена на Гран-при США Формулы 1 в 2023 году?",
-    options: ["Автономный болид", "Виртуальный комментатор", "Кубки, активируемые поцелуем", "Голографический флаг"],
-    correctAnswer: 2,
-    explanation: "На Гран-при США 2023 были представлены кубки, активируемые поцелуем"
+    question: "В рамках партнерства Lenovo и Formula 1, какое устройство Lenovo обычно используется инженерами Формулы-1 на трассе?",
+    options: [
+      "ThinkPad X1 Carbon",
+      "Рабочая станция ThinkPad",
+      "Yoga 9 2-in-1",
+      "Legion Pro 7"
+    ],
+    correctAnswer: 1, // Б
+    explanation: "Инженеры Формулы-1 на трассе обычно используют рабочие станции ThinkPad."
   },
   {
     id: 10,
-    question: "Как Lenovo поддерживает устойчивое развитие в рамках партнёрства с Формулой 1?",
-    options: ["Использует солнечные панели на трассах", "Предоставляет электрокары для команд", "Обеспечивает переработку 95% устаревшего оборудования", "Спонсирует посадку деревьев"],
-    correctAnswer: 2,
-    explanation: "Lenovo обеспечивает переработку 95% устаревшего оборудования в рамках устойчивого развития"
+    question: "Какая инновация от Lenovo была представлена на Гран-при США Формулы 1 в 2023 году?",
+    options: [
+      "Автономный болид",
+      "Виртуальный комментатор",
+      "Кубки, активируемые поцелуем",
+      "Голографический флаг"
+    ],
+    correctAnswer: 2, // В
+    explanation: "На Гран-при США Формулы 1 в 2023 году были представлены кубки, активируемые поцелуем."
   }
 ];
 
